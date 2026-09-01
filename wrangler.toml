@@ -1,0 +1,8 @@
+name = "familientagebuch"
+main = "familientagebuch-worker.js"
+compatibility_date = "2026-08-31"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "familientagebuch-db"
+database_id = "7dcbf1c4-6aa8-45d1-9d80-f84471ed7d3e"
