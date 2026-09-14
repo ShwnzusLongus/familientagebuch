@@ -50,8 +50,15 @@ const LOGIN_HTML = `<!DOCTYPE html>
   .box{background:#fff;border-radius:20px;padding:32px 24px;max-width:360px;width:100%;box-shadow:0 4px 14px rgba(150,68,10,0.12);text-align:center;}
   .box h1{font-size:22px;margin:0 0 6px;color:#3A2A1A;}
   .box p{font-size:14px;color:#7A6A57;margin:0 0 22px;}
-  input{width:100%;padding:14px;border-radius:12px;border:1.5px solid #EAD9C4;font-size:17px;text-align:center;margin-bottom:14px;}
-  button{width:100%;padding:14px;border-radius:12px;border:none;background:#E8871E;color:#fff;font-size:16px;font-weight:700;}
+  .pw-field{position:relative;margin-bottom:14px;}
+  .pw-field input{width:100%;padding:14px 46px 14px 14px;border-radius:12px;border:1.5px solid #EAD9C4;font-size:17px;text-align:center;box-sizing:border-box;}
+  .pw-toggle{
+    position:absolute;right:6px;top:50%;transform:translateY(-50%);
+    background:none;border:none;width:36px;height:36px;padding:0;
+    display:flex;align-items:center;justify-content:center;color:#7A6A57;
+  }
+  .pw-toggle svg{width:22px;height:22px;}
+  button[type=submit]{width:100%;padding:14px;border-radius:12px;border:none;background:#E8871E;color:#fff;font-size:16px;font-weight:700;}
   .error{color:#C0392B;font-size:14px;margin-bottom:10px;min-height:18px;}
 </style>
 </head>
@@ -61,11 +68,27 @@ const LOGIN_HTML = `<!DOCTYPE html>
     <p>Bitte Passwort eingeben</p>
     <div class="error" id="errorMsg"></div>
     <form id="loginForm">
-      <input type="password" id="pw" placeholder="Passwort" autofocus>
+      <div class="pw-field">
+        <input type="password" id="pw" placeholder="Passwort" autofocus autocomplete="current-password">
+        <button type="button" class="pw-toggle" id="pwToggle" aria-label="Passwort anzeigen">
+          <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
       <button type="submit">Anmelden</button>
     </form>
   </div>
   <script>
+    document.getElementById('pwToggle').addEventListener('click', () => {
+      const pw = document.getElementById('pw');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (pw.type === 'password') {
+        pw.type = 'text';
+        eyeIcon.innerHTML = '<path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a21.6 21.6 0 015.06-6.06M9.9 4.24A10.94 10.94 0 0112 4c7 0 11 7 11 7a21.6 21.6 0 01-2.61 3.68M14.12 14.12a3 3 0 11-4.24-4.24"/><path d="M1 1l22 22"/>';
+      } else {
+        pw.type = 'password';
+        eyeIcon.innerHTML = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    });
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const pw = document.getElementById('pw').value;
